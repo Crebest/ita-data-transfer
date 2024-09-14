@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP & ITA SAAS 关联</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+        }
+
+        .left-panel,
+        .right-panel {
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .left-panel {
+            width: 50%;
+            background-color: #f0f0f0;
+            border-right: 1px solid #ccc;
+        }
+
+        .right-panel {
+            width: 50%;
+            background-color: #fff;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .input-group input.error {
+            border-color: red;
+            /* 红色边框样式 */
+        }
+
+        .input-group button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .input-group button:hover {
+            background-color: #0e7aed;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #e9ecef;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+            /* 初始时隐藏 */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- 左侧面板 -->
+        <div class="left-panel">
+            <h2>领星 ERP 关联状态</h2>
+
+            <div class="input-group">
+                <label for="erp-key">ERP Key:</label>
+                <input type="text" id="erp-key" placeholder="请输入ERP Key">
+                <div class="error-message" id="erp-error">请输入完整的ERP Key和密钥</div>
+            </div>
+
+            <div class="input-group">
+                <label for="erp-secret">ERP 密钥:</label>
+                <input type="text" id="erp-secret" placeholder="请输入ERP 密钥">
+            </div>
+
+            <div class="input-group">
+                <button id="erp-confirm-btn">确认关联</button>
+            </div>
+
+            <div class="status" id="erp-status">
+                关联状态：未关联
+            </div>
+        </div>
+
+        <!-- 右侧面板 -->
+        <div class="right-panel">
+            <h2>ITA SAAS 关联状态</h2>
+
+            <div class="input-group">
+                <label for="ita-key">ITA Key:</label>
+                <input type="text" id="ita-key" placeholder="请输入ITA Key">
+                <div class="error-message" id="ita-error">请输入完整的ITA Key和密钥</div>
+            </div>
+
+            <div class="input-group">
+                <label for="ita-secret">ITA 密钥:</label>
+                <input type="text" id="ita-secret" placeholder="请输入ITA 密钥">
+            </div>
+
+            <div class="input-group">
+                <button id="ita-confirm-btn">确认关联</button>
+            </div>
+
+            <div class="status" id="ita-status">
+                关联状态：未关联
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 显示错误提示，并加红色边框
+        function showError(inputElement, errorElement) {
+            inputElement.classList.add('error'); // 添加红色边框
+            errorElement.style.display = "block"; // 显示错误提示
+        }
+
+        // 隐藏错误提示，并移除红色边框
+        function hideError(inputElement, errorElement) {
+            inputElement.classList.remove('error'); // 移除红色边框
+            errorElement.style.display = "none"; // 隐藏错误提示
+        }
+
+        // 左侧 ERP 关联按钮事件
+        document.getElementById('erp-confirm-btn').addEventListener('click', function () {
+            const erpKey = document.getElementById('erp-key');
+            const erpSecret = document.getElementById('erp-secret');
+            const erpErrorElement = document.getElementById('erp-error');
+            let hasError = false;
+
+            // 检查 ERP Key 输入框是否为空
+            if (!erpKey.value) {
+                showError(erpKey, erpErrorElement);
+                hasError = true;
+            } else {
+                hideError(erpKey, erpErrorElement);
+            }
+
+            // 检查 ERP 密钥 输入框是否为空
+            if (!erpSecret.value) {
+                showError(erpSecret, erpErrorElement);
+                hasError = true;
+            } else {
+                hideError(erpSecret, erpErrorElement);
+            }
+
+            // 如果没有错误，更新状态
+            if (!hasError) {
+                document.getElementById('erp-status').innerText = '关联状态：已关联';
+            }
+        });
+
+        // 右侧 ITA 关联按钮事件
+        document.getElementById('ita-confirm-btn').addEventListener('click', function () {
+            const itaKey = document.getElementById('ita-key');
+            const itaSecret = document.getElementById('ita-secret');
+            const itaErrorElement = document.getElementById('ita-error');
+            let hasError = false;
+
+            // 检查 ITA Key 输入框是否为空
+            if (!itaKey.value) {
+                showError(itaKey, itaErrorElement);
+                hasError = true;
+            } else {
+                hideError(itaKey, itaErrorElement);
+            }
+
+            // 检查 ITA 密钥 输入框是否为空
+            if (!itaSecret.value) {
+                showError(itaSecret, itaErrorElement);
+                hasError = true;
+            } else {
+                hideError(itaSecret, itaErrorElement);
+            }
+
+            // 如果没有错误，更新状态
+            if (!hasError) {
+                document.getElementById('ita-status').innerText = '关联状态：已关联';
+            }
+        });
+
+        // 当输入框有内容时，自动移除错误提示和红色边框
+        const erpKeyInput = document.getElementById('erp-key');
+        const erpSecretInput = document.getElementById('erp-secret');
+        const itaKeyInput = document.getElementById('ita-key');
+        const itaSecretInput = document.getElementById('ita-secret');
+
+        // 将事件绑定到所有相关输入框
+        [erpKeyInput, erpSecretInput].forEach(input => {
+            input.addEventListener('input', function () {
+                const erpErrorElement = document.getElementById('erp-error');
+                if (input.value) {
+                    hideError(input, erpErrorElement); // 如果有输入内容，移除错误
+                }
+            });
+        });
+
+        [itaKeyInput, itaSecretInput].forEach(input => {
+            input.addEventListener('input', function () {
+                const itaErrorElement = document.getElementById('ita-error');
+                if (input.value) {
+                    hideError(input, itaErrorElement); // 如果有输入内容，移除错误
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
